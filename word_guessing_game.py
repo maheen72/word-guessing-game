@@ -1,72 +1,83 @@
-#     ------------------------ WORD GUESSING GAME ------------------------
+# ------------------------ WORD GUESSING GAME ------------------------
 
 import random
 
-Easy = ["eat" , "sleep" , "drink" , "dance"]
-Medium = ["eating" , "drinking" , "dancing" , "sleeping"]
-Hard = ["ate" , "drank" , "danced" , "slept"]
+easy_words = ["eat", "sleep", "drink", "dance"]
+medium_words = ["eating", "drinking", "dancing", "sleeping"]
+hard_words = ["ate", "drank", "danced", "slept"]
 
 def main_function():
     print("---- Welcome to word guessing game ----")
-    print("What you want to guess : Easy, Medium and Hard or Exit")
+    print("Choose difficulty: Easy, Medium, Hard or Exit")
 
-    Attempt = 0
-    user_choice = input("Enter your difficuilty_level:").lower()
+    attempts = 0
 
+    # Input validation
+    while True:
+        user_choice = input("Enter your difficulty level: ").lower()
+        if user_choice in ["easy", "medium", "hard", "exit"]:
+            break
+        print("Invalid choice. Try again.")
+
+    if user_choice == "exit":
+        print("--- Thanks for using ---")
+        exit()
+
+    # Difficulty selection
     if user_choice == "easy":
-     secret = random.choice(Easy)
-     maximum_attempts = 3
-
+        secret = random.choice(easy_words)
+        maximum_attempts = 3
     elif user_choice == "medium":
-     secret = random.choice(Medium)
-     maximum_attempts = 4
-    
+        secret = random.choice(medium_words)
+        maximum_attempts = 4
     elif user_choice == "hard":
-     secret = random.choice(Hard)
-     maximum_attempts = 5
-
-    elif user_choice == "Exit":
-     print("---Thanks for using---")
-     exit()
-
-    else:
-     print("invalid choice enter right one")
-     return
+        secret = random.choice(hard_words)
+        maximum_attempts = 5
 
     def save_password():
-     with open("password.txt" , "w") as file:
-      file.write(secret)
-    
-    while Attempt < maximum_attempts :
-      user_input = input("Enter the word:").lower()
-      Attempt += 1
+        with open("password.txt", "w") as file:
+            file.write(secret)
 
-      if user_input == secret :
-       print("congrats! you guess right")
-       print(f"you guess right in {Attempt} Attempts")
-       break
-        
-      else:
-        print("OHH... you guess wrong")
-        print(f"you have {maximum_attempts - Attempt} attempts left")
-        print("try again")
+    print(f"The word has {len(secret)} letters")
 
-    if Attempt == maximum_attempts:
-     print("--- GAME OVER ---")
-     print(f"the secret word is '{secret}'")
+    # Game loop
+    while attempts < maximum_attempts:
+        user_input = input("Enter the word: ").lower()
+        attempts += 1
 
-    
+        if user_input == secret:
+            print("Congrats! You guessed right")
+            print(f"You guessed right in {attempts} attempts")
+            break
+        else:
+            print("Wrong guess")
+            print(f"You have {maximum_attempts - attempts} attempts left")
+            print("Try again")
+
+    # Game over
+    if attempts == maximum_attempts and user_input != secret:
+        print("--- GAME OVER ---")
+        print(f"The secret word is '{secret}'")
+
+    # Save option
     choice = input("Do you want to save the secret word? (yes/no): ").lower()
     if choice == "yes":
-       save_password()
-       print("Secret word saved.")
+        save_password()
+        print("Secret word saved.")
+
+
+# First run
 main_function()
 
+# Play again loop
 while True:
- user_input = input("Do you want to play again? (yes/no): ").lower()
- if user_input == "yes":
-    print("Restarting the game...")
-    main_function()
- else:
-    print("Thanks for playing! Goodbye.")
-    exit()
+    user_input = input("Do you want to play again? (yes/no): ").lower()
+
+    if user_input == "yes":
+        print("Restarting the game...")
+        main_function()
+    elif user_input == "no":
+        print("Thanks for playing! Goodbye.")
+        break
+    else:
+        print("Please enter yes or no.")
