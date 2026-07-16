@@ -65,7 +65,6 @@ def main_function():
         save_password()
         print("Secret word saved.")
 
-
 # First run
 main_function()
 
